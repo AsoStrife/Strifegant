@@ -1,29 +1,34 @@
 <template>
-    <MobileMenu />
+    <div id="layout-wrapper">
+        <TopBar />
 
-    <TopBar />
+        <SideNav />
+    </div>
 
-    <div class="wrapper">
-        <div class="wrapper-box">
 
-            <SideNav />
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
 
-            <div class="content">
                 <router-view></router-view>
+
             </div>
         </div>
     </div>
+
+
+    
 </template>
 
 <script lang="ts">
-import MobileMenu from '@/components/layout/MobileMenu.vue'
+// import MobileMenu from '@/components/layout/MobileMenu.vue'
 import SideNav from '@/components/layout/SideNav.vue'
 import TopBar from '@/components/layout/TopBar.vue';
 
 export default {
     name: "SideMenuLayout",
     components: {
-        MobileMenu,
+        // MobileMenu,
         SideNav,
         TopBar
     }

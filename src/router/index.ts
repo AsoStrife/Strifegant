@@ -13,7 +13,12 @@ const router = createRouter({
                     name: 'dashboard',
                     path: '/',
                     component: HomeView
-                }
+                },
+                // {
+                //     name: 'secondPage',
+                //     path: '/second_page',
+                //     component: HomeView
+                // }
             ]
         }
     ]
