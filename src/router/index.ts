@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
 import SideMenuLayout from '@/layouts/SideMenuLayout.vue'
 
 const router = createRouter({
@@ -12,13 +11,8 @@ const router = createRouter({
                 {
                     name: 'dashboard',
                     path: '/',
-                    component: HomeView
-                },
-                // {
-                //     name: 'secondPage',
-                //     path: '/second_page',
-                //     component: HomeView
-                // }
+                    component: () => import('@/views/HomeView.vue')
+                }
             ]
         }
     ]

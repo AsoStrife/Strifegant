@@ -1,60 +1,63 @@
 <template>
-    <div class="app-menu navbar-menu">
-        <!-- LOGO -->
-        <div class="navbar-brand-box">
-            <!-- Dark Logo-->
-            <a href="index.html" class="logo logo-dark">
-                <span class="logo-sm">
-                    <img src="assets/images/logo-sm.png" alt="" height="22">
-                </span>
-                <span class="logo-lg">
-                    <img src="assets/images/logo-dark.png" alt="" height="17">
-                </span>
-            </a>
-            <!-- Light Logo-->
-            <a href="index.html" class="logo logo-light">
-                <span class="logo-sm">
-                    <img src="@/assets/images/logo-sm.png" alt="" height="22">
-                </span>
-                <span class="logo-lg">
-                    <img src="@/assets/images/logo-light.png" alt="" height="17">
-                </span>
-            </a>
-            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
-                id="vertical-hover">
-                <i class="ri-record-circle-line"></i>
-            </button>
-        </div>
-
-        <div id="scrollbar">
-            <div class="container-fluid">
-
-                <div id="two-column-menu">
-                </div>
-                <ul class="navbar-nav" id="navbar-nav">
-                    <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-                    <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
-                            aria-expanded="false" aria-controls="sidebarDashboards">
-                            <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Projects</span>
-                        </a>
-                        <div class="collapse menu-dropdown" id="sidebarDashboards">
-                            <ul class="nav nav-sm flex-column">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link" data-key="t-analytics">Analytics </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li> <!-- end Dashboard Menu -->
+    <nav class="side-nav">
+        <ul>
+            <li>
+                <router-link to="" class="side-menu side-menu--active side-menu--open">
+                    <div class="side-menu__icon"> <i data-feather="home"></i> </div>
+                    <div class="side-menu__title">
+                        Dashboard
+                        <div class="side-menu__sub-icon"> <i class="fa-solid fa-chevron-up"></i> </div>
+                    </div>
+                </router-link>
+                <ul class="side-menu__sub-open">
+                    <li>
+                        <router-link to="" class="side-menu side-menu--active side-menu--open">
+                            <div class="side-menu__icon"> <i class="fa-solid fa-chart-line"></i> </div>
+                            <div class="side-menu__title"> Overview 1 </div>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link to="" class="side-menu">
+                            <div class="side-menu__icon"> <i class="fa-solid fa-chart-line"></i> </div>
+                            <div class="side-menu__title"> Overview 2 </div>
+                        </router-link>
+                    </li>
                 </ul>
-            </div>
-            <!-- Sidebar -->
-        </div>
-
-        <div class="sidebar-background"></div>
-    </div>
-
-    <div class="vertical-overlay"></div>
-
+            </li>
+        </ul>
+    </nav>
 </template>
-<script setup lang="ts"></script>
+<script lang="ts">
+import cash from "cash-dom"
+import Velocity from "velocity-animate"
+
+export default {
+    mounted() {
+
+        cash(".side-menu").on("click", function () {
+        if (cash(this).parent().find("ul").length) {
+            if (
+                cash(this).parent().find("ul").first()[0].offsetParent !== null
+            ) {
+                cash(this).removeClass("side-menu--open");
+                Velocity(cash(this).parent().find("ul").first(), "slideUp", {
+                    duration: 300,
+                    complete: function (el) {
+                        cash(el).removeClass("side-menu__sub-open");
+                    },
+                });
+            } else {
+                cash(this).addClass("side-menu--open");
+                Velocity(cash(this).parent().find("ul").first(), "slideDown", {
+                    duration: 300,
+                    complete: function (el) {
+                        cash(el).addClass("side-menu__sub-open");
+                    },
+                });
+            }
+        }
+    })
+        
+    }
+}
+</script>
