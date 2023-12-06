@@ -5,15 +5,11 @@
             <!-- BEGIN: Logo -->
             <router-link to="" class="-intro-x d-none d-md-flex">
                 <img alt="Icewall Bootstrap HTML Admin Template" class="w-6" src="@/assets/images/logo.svg">
-                <span class="text-white fs-lg ms-3"> Ice<span class="fw-medium">wall</span> </span>
+                <span class="text-white fs-lg ms-3"> Strifegantt  </span>
             </router-link>
             <!-- END: Logo -->
             <!-- BEGIN: Breadcrumb -->
-            <div class="-intro-x breadcrumb me-auto"> 
-                <router-link to="">Application</router-link> 
-                <i class="fa-solid fa-chevron-right breadcrumb__icon"></i>
-                <router-link to="" class="breadcrumb--active">Dashboard</router-link> 
-            </div>
+            <Breadcrumbs></Breadcrumbs>
             <!-- END: Breadcrumb -->
 
             <!-- BEGIN: Account Menu -->
@@ -33,14 +29,14 @@
                         </li>
                         <li>
                             <router-link to="" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> 
-                                <i class="fa-regular fa-user w-4 h-4 me-2"></i>Profile </router-link>
+                                <i class="fa-regular fa-user w-4 h-4 me-2"></i> {{ $t('general.profile') }}  </router-link>
                         </li>
                         <li>
                             <hr class="dropdown-divider border-theme-12 dark-border-dark-3">
                         </li>
                         <li>
                             <router-link to="" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> 
-                                <i class="fa-solid fa-arrow-right-from-bracket w-4 h-4 me-2"></i> Logout 
+                                <i class="fa-solid fa-arrow-right-from-bracket w-4 h-4 me-2"></i> {{ $t('general.logout') }} 
                             </router-link>
                         </li>
                     </ul>
@@ -51,6 +47,13 @@
     </div>
 </template>
 
+<script lang="ts">
+import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 
-<script setup lang="ts">
+export default {
+    name: 'TopBar', 
+    components: {
+        Breadcrumbs
+    }
+}
 </script>

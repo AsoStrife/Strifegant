@@ -5,7 +5,7 @@
                 <router-link to="" class="side-menu side-menu--active side-menu--open">
                     <div class="side-menu__icon"> <i data-feather="home"></i> </div>
                     <div class="side-menu__title">
-                        Dashboard
+                        {{ $t('general.dashboard_menu')}} 
                         <div class="side-menu__sub-icon"> <i class="fa-solid fa-chevron-up"></i> </div>
                     </div>
                 </router-link>
@@ -13,13 +13,13 @@
                     <li>
                         <router-link to="" class="side-menu side-menu--active side-menu--open">
                             <div class="side-menu__icon"> <i class="fa-solid fa-chart-line"></i> </div>
-                            <div class="side-menu__title"> Overview 1 </div>
+                            <div class="side-menu__title"> {{ $t('general.dashboard_submenu_1') }} </div>
                         </router-link>
                     </li>
                     <li>
                         <router-link to="" class="side-menu">
                             <div class="side-menu__icon"> <i class="fa-solid fa-chart-line"></i> </div>
-                            <div class="side-menu__title"> Overview 2 </div>
+                            <div class="side-menu__title"> {{ $t('general.dashboard_submenu_2') }} </div>
                         </router-link>
                     </li>
                 </ul>
