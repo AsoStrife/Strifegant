@@ -3,12 +3,7 @@ export default {
         {
             name: "dashboard",
             path: "/",
-            i18n: "Home"
-        },
-        {
-            name: "dashboard",
-            path: "/",
-            i18n: "Dashboard"
+            i18n: "general.breadcrumbs"
         }
         
     ]
