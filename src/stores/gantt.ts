@@ -1,18 +1,30 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { Task, GanttConfig } from '@/models/gantt'
+import dayjs from 'dayjs'
 
 export const useGanttStore = defineStore('gantt', {
     state: () => {
         return {
-            _task: [] as Task[],
+            _tasks: [] as Task[],
             _config: {} as GanttConfig
         }
     },
     getters: {
-        task: (state) => state._task,
+        tasks: (state) => state._tasks,
         config: (state) => state._config
     },
     actions: {
+        addTask(task: Task) {
+            task.start = dayjs(task.start).format('YYYY-MM-DD');
+            task.end = dayjs(task.end).format('YYYY-MM-DD');
+            this._tasks.push(task)
+        },
+        updateTask(id: string) {
+
+        },
+        deleteTask(id: string) {
+
+        }
     }
 })

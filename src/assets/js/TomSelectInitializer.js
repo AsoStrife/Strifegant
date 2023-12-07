@@ -1,18 +1,16 @@
-import TomSelect from "tom-select";
+import TomSelect from "tom-select"
 
-(function (cash) {
-    "use strict";
-
+const TomSelectInitializer = () => {    
     // Tom Select
     cash(".tom-select").each(function () {
         let options = {
             plugins: {
                 dropdown_input: {},
             },
-        };
+        }
 
         if (cash(this).data("placeholder")) {
-            options.placeholder = cash(this).data("placeholder");
+            options.placeholder = cash(this).data("placeholder")
         }
 
         if (cash(this).attr("multiple") !== undefined) {
@@ -30,14 +28,14 @@ import TomSelect from "tom-select";
                     return confirm(
                         values.length > 1
                             ? "Are you sure you want to remove these " +
-                                  values.length +
-                                  " items?"
+                            values.length +
+                            " items?"
                             : 'Are you sure you want to remove "' +
-                                  values[0] +
-                                  '"?'
-                    );
+                            values[0] +
+                            '"?'
+                    )
                 },
-            };
+            }
         }
 
         if (cash(this).data("header")) {
@@ -49,9 +47,11 @@ import TomSelect from "tom-select";
                         title: cash(this).data("header"),
                     },
                 },
-            };
+            }
         }
 
-        new TomSelect(this, options);
-    });
-})(cash);
+        new TomSelect(this, options)
+    })
+}
+
+export default TomSelectInitializer

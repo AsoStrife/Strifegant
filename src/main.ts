@@ -1,10 +1,13 @@
 import '@/assets/css/app.css'
+import '@/assets/css/vendor.css'
 import '@/assets/css/font-awesome.min.css'
 import '@/assets/css/frappe-gantt.min.css'
 
 import '@/assets/js/app.js'
 import '@/assets/js/font-awesome.min.js'
 
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -21,3 +24,4 @@ app.use(router)
 app.use(i18n)
 
 app.mount('#app')
+app.component('VueDatePicker', VueDatePicker)
