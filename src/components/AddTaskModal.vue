@@ -36,9 +36,7 @@
                     <div class="g-col-12 g-col-sm-12"> 
                         <label for="dependencies" class="form-label">Dipendenze</label>
                         <select id="dependencies" data-placeholder="Select categories" class="tom-select w-full" multiple v-model="task.dependencies">
-                            <option value="1">Task 1</option>
-                            <option value="2">Task 2</option>
-                            <option value="3">Task 3</option>
+                            <!-- <option v-for="task in this.ganttStore.tasks" v-bind:key="task.id" :value="task.id"> {{ task.name }}</option> -->
                         </select>
                     </div>
                     
@@ -60,12 +58,14 @@
 import { v4 as uuidv4 } from 'uuid'
 import { useGanttStore } from '@/stores/gantt'
 import type { Task } from '@/models/gantt'
+import TomSelectInitializer from '@/assets/js/TomSelectInitializer'
 
 export default {
     name: "AddTaskModal", 
     data() {
         return {
             ganttStore: useGanttStore(),
+            tasks: [],
             task: {
                 id: '',
                 name: '',
@@ -73,20 +73,33 @@ export default {
                 end: '',
                 progress: 0,
                 dependencies: []
+                // id: 'Task 2',
+                // name: 'Redesign website',
+                // start: '2024-01-05',
+                // end: '2024-01-19',
+                // progress: 0,
+                // dependencies: ['Task 1'],
             } as Task,
         }
     },
-    // watch: {
-    //     task: {
-    //     handler(newTask, oldTask) {
-    //         console.log('Task modified:', newTask)
-    //     },
-    //     deep: true // This enables deep watching for nested properties of the task object
-    //     }
-    // },
+    watch: {
+        tasks: {
+            handler(newTask, oldTask) {
+                console.log('Task modified:', newTask)
+            },
+            deep: true // This enables deep watching for nested properties of the task object
+        }
+    },
     mounted() {
         this.$el.addEventListener('show.bs.modal', this.setID)
         this.$el.addEventListener('hide.bs.modal', this.clearData)
+
+        // this.tasks = this.ganttStore.tasks.map(a => Object.assign({}, a))
+
+
+        this.ganttStore.$subscribe(() => {
+
+        })
     },
     destroyed() {
         this.$el.removeEventListener('show.bs.modal')
