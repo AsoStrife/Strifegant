@@ -24,7 +24,7 @@ export const useGanttStore = defineStore('gantt', {
 
         },
         deleteTask(id: string) {
-
+            
         }
     }
 })

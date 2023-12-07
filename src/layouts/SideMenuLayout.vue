@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <AddTaskModal />
+    <AddTaskModal id="add-task-modal" @close-add-task-modal="closeAddTaskModal"/>
     
 </template>
 
@@ -29,6 +29,14 @@ export default {
         SideNav,
         TopBar,
         AddTaskModal
+    },
+    methods: {
+        closeAddTaskModal() {
+            const modal = new bootstrap.Modal(document.getElementById('addTaskModal'), {});
+
+            console.log(modal)
+            modal.hide()
+        }
     }
 }
 </script>

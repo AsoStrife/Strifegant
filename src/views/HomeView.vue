@@ -54,44 +54,31 @@ import Gantt from '@/assets/js/frappe-gantt'
 
 import TomSelectInitializer from '@/assets/js/TomSelectInitializer'
 import DatePickerInitializer from '@/assets/js/DatePickerInitializer'
-import AddTaskVue from '../components/AddTask.vue'
+import { useGanttStore } from '@/stores/gantt'
 
 export default {
     components: {
     },
     data() {
         return {
-            tasks: [
-                {
-                    id: 'Task 1',
-                    name: 'Redesign website',
-                    start: '2024-01-01',
-                    end: '2024-01-13',
-                    progress: 20,
-                    dependencies: '',
-                },
-                {
-                    id: 'Task 2',
-                    name: 'Redesign website',
-                    start: '2024-01-13',
-                    end: '2024-01-23',
-                    progress: 20,
-                    dependencies: 'Task 1',
-                },
-                {
-                    id: 'Task 3',
-                    name: 'Redesign website',
-                    start: '2024-01-23',
-                    end: '2024-01-30',
-                    progress: 20,
-                    dependencies: 'Task 2',
-                }
-            ],
-            date: ""
+            tasks: [],
+            ganttStore: useGanttStore(),
+            gantt: {} as Gantt
         }
     },
     mounted() {
-        new Gantt("#gantt", this.tasks, {
+        const firstTask = {
+            id: 'Task 1',
+            name: 'Redesign website',
+            start: '2024-01-01',
+            end: '2024-01-13',
+            progress: 0,
+            dependencies: [''],
+        }
+
+        this.ganttStore.addTask(firstTask)
+
+        this.gantt = new Gantt("#gantt", this.ganttStore.tasks, {
             header_height: 50,
             column_width: 30,
             step: 24,
@@ -104,18 +91,25 @@ export default {
             date_format: 'YYYY-MM-DD',
             language: 'it', 
             custom_popup_html: null,
-            on_click: function (task) {
+            on_click: function (task: any) {
                 console.log(task);
             },
-            on_date_change: function (task, start, end) {
+            on_date_change: function (task: any, start: any, end: any) {
                 console.log(task, start, end);
             },
-            on_progress_change: function (task, progress) {
+            on_progress_change: function (task: any, progress: any) {
                 console.log(task, progress);
             },
-            on_view_change: function (mode) {
-                console.log(mode);
-            }
+            // on_view_change: function (mode: any) {
+            //     console.log(mode);
+            // }
+        })
+
+        this.ganttStore.$subscribe(() => {
+            // this.gantt.refresh(this.ganttStore.tasks)
+            console.log(this.ganttStore.tasks)
+            const tmp = Object.assign(this.ganttStore.tasks)
+            this.gantt.refresh(tmp)
         })
 
         TomSelectInitializer()

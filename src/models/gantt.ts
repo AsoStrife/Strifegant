@@ -25,7 +25,7 @@ export interface Task {
     start: string;
     end: string;
     progress: number;
-    dependencies: string;
+    dependencies: string[];
 }
 
 export interface GanttConfig {

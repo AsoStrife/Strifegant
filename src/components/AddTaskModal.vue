@@ -47,7 +47,7 @@
                 
                 <!-- BEGIN: Modal Footer -->
                 <div class="modal-footer text-end"> 
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary w-20 me-1">Chiudi</button> 
+                    <button type="button" id="closeButton" data-bs-dismiss="modal" class="btn btn-outline-secondary w-20 me-1">Chiudi</button> 
                     <button type="button" class="btn btn-primary w-20" @click="saveData">Salva</button> 
                 </div> 
                 <!-- END: Modal Footer -->
@@ -59,6 +59,7 @@
 <script lang="ts">
 import { v4 as uuidv4 } from 'uuid'
 import { useGanttStore } from '@/stores/gantt'
+import type { Task } from '@/models/gantt'
 
 export default {
     name: "AddTaskModal", 
@@ -70,7 +71,7 @@ export default {
                 name: '',
                 start: '',
                 end: '',
-                progress: '',
+                progress: 0,
                 dependencies: []
             } as Task,
         }
@@ -101,19 +102,14 @@ export default {
                 name: '',
                 start: '',
                 end: '',
-                progress: '',
+                progress: 0,
                 dependencies: []
             }
         },
         saveData() {
             this.ganttStore.addTask(this.task)
-
-            // this.$emit('close-add-task-modal')
-            // let modal = new bootstrap.Modal("#add-task-modal")
-            // console.log(modal)
-            // modal.show()
-            // modal.hide()
-
+            const el = document.getElementById('closeButton') as HTMLElement
+            el.click()
         },
         
     }
