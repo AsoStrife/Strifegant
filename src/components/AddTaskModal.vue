@@ -30,14 +30,15 @@
                     <div class="g-col-12 g-col-sm-6"> 
                         <label for="end" class="form-label">Fine Task</label>
                         <VueDatePicker v-model="task.end" format="yyyy-MM-dd" :enable-time-picker="false"
-                            input-class-name="form-control" auto-apply locale="it-IT"></VueDatePicker>
+                            input-class-name="form-control" auto-apply locale="it-IT" :min-date="task.start"></VueDatePicker>
                     </div>
 
                     <div class="g-col-12 g-col-sm-12"> 
-                        <label for="dependencies" class="form-label">Dipendenze</label>
+                        <!-- <label for="dependencies" class="form-label">Dipendenze</label>
                         <select id="dependencies" data-placeholder="Select categories" class="tom-select w-full" multiple v-model="task.dependencies">
-                            <!-- <option v-for="task in this.ganttStore.tasks" v-bind:key="task.id" :value="task.id"> {{ task.name }}</option> -->
-                        </select>
+                            <option v-for="task in this.ganttStore.tasks" v-bind:key="task.id" :value="task.id"> {{ task.name }}</option>
+                        </select> -->
+                        <DependenciesTask />
                     </div>
                     
                 </div> 
@@ -58,27 +59,30 @@
 import { v4 as uuidv4 } from 'uuid'
 import { useGanttStore } from '@/stores/gantt'
 import type { Task } from '@/models/gantt'
-import TomSelectInitializer from '@/assets/js/TomSelectInitializer'
+import DependenciesTask from '@/components/DependenciesTask.vue'
 
 export default {
     name: "AddTaskModal", 
+    components: {
+        DependenciesTask
+    },
     data() {
         return {
             ganttStore: useGanttStore(),
             tasks: [],
             task: {
-                id: '',
-                name: '',
-                start: '',
-                end: '',
-                progress: 0,
-                dependencies: []
-                // id: 'Task 2',
-                // name: 'Redesign website',
-                // start: '2024-01-05',
-                // end: '2024-01-19',
+                // id: '',
+                // name: '',
+                // start: '',
+                // end: '',
                 // progress: 0,
-                // dependencies: ['Task 1'],
+                // dependencies: []
+                id: 'Task 2',
+                name: 'Redesign website',
+                start: '2024-01-05',
+                end: '2024-01-19',
+                progress: 0,
+                dependencies: [],
             } as Task,
         }
     },
@@ -118,9 +122,10 @@ export default {
                 progress: 0,
                 dependencies: []
             }
+            // this.task.name = uuidv4()
         },
-        saveData() {
-            this.ganttStore.addTask(this.task)
+        async saveData() {
+            await this.ganttStore.addTask(this.task)
             const el = document.getElementById('closeButton') as HTMLElement
             el.click()
         },

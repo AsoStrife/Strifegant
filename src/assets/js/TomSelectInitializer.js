@@ -1,6 +1,8 @@
 import TomSelect from "tom-select"
 
 const TomSelectInitializer = () => {    
+    const ts = {}
+    
     // Tom Select
     cash(".tom-select").each(function () {
         let options = {

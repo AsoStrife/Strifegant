@@ -25,6 +25,13 @@ export const useGanttStore = defineStore('gantt', {
         },
         deleteTask(id: string) {
             
+        },
+        getTasksTomSelect() {
+            const options = this._tasks.map((item: Task) => ({
+                value: item.id,
+                text: item.name,
+            }))
+            return options
         }
     }
 })

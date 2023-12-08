@@ -54,8 +54,8 @@
 
 import Gantt from '@/assets/js/frappe-gantt'
 
-import TomSelectInitializer from '@/assets/js/TomSelectInitializer'
-import DatePickerInitializer from '@/assets/js/DatePickerInitializer'
+// import TomSelectInitializer from '@/assets/js/TomSelectInitializer'
+// import DatePickerInitializer from '@/assets/js/DatePickerInitializer'
 import { useGanttStore } from '@/stores/gantt'
 
 export default {
@@ -80,8 +80,8 @@ export default {
                 this.gantt.refresh(tmp)
             })
 
-        TomSelectInitializer()
-        DatePickerInitializer()
+        // TomSelectInitializer()
+        // DatePickerInitializer()
 
     },
     methods: {
