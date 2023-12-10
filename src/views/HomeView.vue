@@ -38,10 +38,14 @@
 
     <div class="row gap-y-6 mt-5">
         <div class="intro-y col-12 col-lg-12">
-
+            
             <div class="intro-y box">
-                <div
-                    class="d-flex flex-column flex-sm-row align-items-center p-5 border-bottom border-gray-200 dark-border-dark-5">
+                <div class="p-5" v-if="gantt == undefined">
+                    <div class="alert alert-secondary d-flex align-items-center mb-2" role="alert"> 
+                        <i class="fa-solid fa-circle-exclamation me-3"></i> Non sono presenti task per questo progetto 
+                    </div>
+                </div>
+                <div class="d-flex flex-column flex-sm-row align-items-center p-5 border-bottom border-gray-200 dark-border-dark-5">
                     <svg id="gantt"></svg>
                 </div>
             </div>
@@ -53,9 +57,6 @@
 <script lang="ts">
 
 import Gantt from '@/assets/js/frappe-gantt'
-
-// import TomSelectInitializer from '@/assets/js/TomSelectInitializer'
-// import DatePickerInitializer from '@/assets/js/DatePickerInitializer'
 import { useGanttStore } from '@/stores/gantt'
 
 export default {
@@ -69,20 +70,17 @@ export default {
         }
     },
     mounted() {
-        if (this.ganttStore.tasks.length > 0)
+        if (this.ganttStore.tasks.length > 0){
             this.initializeGantt()
-
-            this.ganttStore.$subscribe(() => {
-                if(this.gantt == undefined )
-                    this.initializeGantt()
-                
-                const tmp = this.ganttStore.tasks.map(a => Object.assign({}, a))
-                this.gantt.refresh(tmp)
-            })
-
-        // TomSelectInitializer()
-        // DatePickerInitializer()
-
+        }
+        
+        this.ganttStore.$subscribe(() => {
+            if(this.gantt == undefined )
+                this.initializeGantt()
+            
+            const tmp = this.ganttStore.tasks.map(a => Object.assign({}, a))
+            this.gantt.refresh(tmp)
+        })
     },
     methods: {
         initializeGantt() {

@@ -34,11 +34,7 @@
                     </div>
 
                     <div class="g-col-12 g-col-sm-12"> 
-                        <!-- <label for="dependencies" class="form-label">Dipendenze</label>
-                        <select id="dependencies" data-placeholder="Select categories" class="tom-select w-full" multiple v-model="task.dependencies">
-                            <option v-for="task in this.ganttStore.tasks" v-bind:key="task.id" :value="task.id"> {{ task.name }}</option>
-                        </select> -->
-                        <DependenciesTask />
+                        <DependenciesTask :modelValue="task.dependencies" @update:tom-select-dependencies="addDependencies"/>
                     </div>
                     
                 </div> 
@@ -100,7 +96,6 @@ export default {
 
         // this.tasks = this.ganttStore.tasks.map(a => Object.assign({}, a))
 
-
         this.ganttStore.$subscribe(() => {
 
         })
@@ -111,7 +106,7 @@ export default {
     },
     methods: {
         setID() {
-            this.task.id = uuidv4()
+            // this.task.id = uuidv4()
         },
         clearData() {
             this.task = {
@@ -122,13 +117,16 @@ export default {
                 progress: 0,
                 dependencies: []
             }
-            // this.task.name = uuidv4()
         },
         async saveData() {
             await this.ganttStore.addTask(this.task)
             const el = document.getElementById('closeButton') as HTMLElement
             el.click()
         },
+        addDependencies(input) {
+            // this.task.dependencies.push(input)
+            // console.log(this.task.dependencies)
+        }
         
     }
 }

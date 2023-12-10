@@ -1,6 +1,9 @@
 <template>
     <label for="dependencies" class="form-label">Dipendenze</label>
-    <select id="dependencies" data-placeholder="Select categories" class="tom-select w-full" multiple v-model="task.dependencies">
+    <select id="dependencies" multiple
+        data-placeholder="Seleziona le dipendenze" 
+        class="tom-select w-full">
+        <!-- <option value="Prova" selected> Prova </option> -->
         <!-- <option v-for="task in this.ganttStore.tasks" v-bind:key="task.id" :value="task.id"> {{ task.name }}</option> -->
     </select>
 </template>
@@ -8,9 +11,12 @@
 <script lang="ts">
 import TomSelect from "tom-select"
 import { useGanttStore } from '@/stores/gantt'
+import feather from "feather-icons"
 
 export default {
     name: 'DependenciesTask',
+    props: ['modelValue'],
+    emits: ['update:tom-select-dependencies'],
     data() {
         return {
             ts: {},
@@ -18,22 +24,33 @@ export default {
             ganttStore: useGanttStore(),
             task: {
                 dependencies: []
-            }
+            },
+            selectedValues: []
         }
+    },
+    watch: {
+        modelValue(newValue) {
+            this.updateOptions(newValue)
+        },
+        options(newOptions) {
+            this.updateOptions()
+        },
     },
     mounted() {
         this.initialize()
 
         this.ganttStore.$subscribe(() => {
-            this.updateOptions()
+            // this.updateOptions()
         })
+
+        feather.replace({
+        "stroke-width": 1.5,
+    })
     },
     methods: {
         initialize() {
             this.options = {
-                plugins: {
-                    dropdown_input: {},
-                },
+                plugins: ['remove_button'],
             }
 
             if (cash(this).data("placeholder")) {
@@ -78,9 +95,12 @@ export default {
             }
 
             this.ts = new TomSelect("#dependencies", this.options)
+
             this.updateOptions()
+
+            this.ts.on('item_add', this.handleInput)
         },
-        updateOptions() {
+        updateOptions(value: any) {
             const options = this.ganttStore.getTasksTomSelect()
 
             this.ts.clear(true)
@@ -88,7 +108,17 @@ export default {
             options.forEach((o: any) => {
                 this.ts.registerOption(o)
             })
+            
             this.ts.refreshOptions(false)
+
+            this.ts.setValue(this.modelValue)
+        },
+        handleInput(input: any){
+            if (input == '') return
+
+            // this.$emit('update:tom-select-dependencies', input)
+            // this.selectedValues.push(input)
+            // this.ts.clear()
         }
     }
 }
