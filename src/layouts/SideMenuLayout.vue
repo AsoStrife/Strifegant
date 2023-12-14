@@ -13,6 +13,7 @@
     </div>
 
     <AddTaskModal id="add-task-modal" @close-add-task-modal="closeAddTaskModal"/>
+    <Project id="add-task-modal" @close-add-task-modal="closeAddProjectModal"/>
     
 </template>
 
@@ -33,6 +34,12 @@ export default {
     methods: {
         closeAddTaskModal() {
             const modal = new bootstrap.Modal(document.getElementById('addTaskModal'), {});
+
+            console.log(modal)
+            modal.hide()
+        },
+        closeAddProjectModal() {
+            const modal = new bootstrap.Modal(document.getElementById('addProjectModal'), {});
 
             console.log(modal)
             modal.hide()
