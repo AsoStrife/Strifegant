@@ -1,35 +1,13 @@
 <template>
     <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-8">
         <h2 class="fs-lg fw-medium me-auto">
-            Nome progetto
+            {{ project?.name }}
         </h2>
         <div class="w-full w-sm-auto d-flex mt-4 mt-sm-0">
-            <div class="dropdown me-2">
-                <button class="dropdown-toggle btn box text-gray-700 dark-text-gray-300 d-flex align-items-center"
-                    aria-expanded="false" data-bs-toggle="dropdown"> Mensile <i class="fa-solid fa-chevron-down ms-3"></i>
-                </button>
-                <div class="dropdown-menu w-40">
-                    <ul class="dropdown-content">
-                        <li>
-                            <a href="" class="dropdown-item"> <span class="truncate">Giornaliero</span> </a>
-                        </li>
-                        <li>
-                            <a href="" class="dropdown-item"> <span class="truncate">Settimanale</span> </a>
-                        </li>
-                        <li>
-                            <a href="" class="dropdown-item"> <span class="truncate">Mensile</span> </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
+            
             <button class="btn btn-secondary shadow-md d-flex align-items-center me-2" data-bs-toggle="modal"
                 data-bs-target="#add-task-modal">
                 Aggiungi Task <i class="fa-solid fa-plus ms-3"></i>
-            </button>
-
-            <button class="btn btn-primary shadow-md d-flex align-items-center">
-                Salva <i class="fa-regular fa-floppy-disk ms-3"></i>
             </button>
 
         </div>
@@ -58,18 +36,30 @@
 
 import Gantt from '@/assets/js/frappe-gantt'
 import { useGanttStore } from '@/stores/gantt'
+import { useProjectsStore } from "@/stores/projects"
+import type { Project } from '@/models/gantt'
 
 export default {
     components: {
     },
     data() {
         return {
+            project: {} as Project | undefined, 
+            currentPath: '' as string,
+            projectID: '' as string | string[],
+            projectStore: useProjectsStore(),
+
             tasks: [],
             ganttStore: useGanttStore(),
             gantt: undefined
         }
     },
+    watch: {
+        '$route': 'fetchData',
+    },
     mounted() {
+        this.fetchData()
+
         if (this.ganttStore.tasks.length > 0){
             this.initializeGantt()
         }
@@ -110,6 +100,11 @@ export default {
                     console.log(mode);
                 }
             })
+        },
+        fetchData() {
+            this.currentPath = this.$route.path
+            this.projectID = this.$route.params.id
+            this.project = this.projectStore.project(this.projectID.toString())
         }
     }
 }

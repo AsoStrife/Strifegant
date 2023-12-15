@@ -1,40 +1,23 @@
 <template>
-    <div id="add-task-modal" class="modal fade" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div id="add-project-modal" class="modal fade" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- BEGIN: Modal Header -->
                 <div class="modal-header">
-                    <h2 class="fw-medium fs-base me-auto">Aggiungi task</h2> 
+                    <h2 class="fw-medium fs-base me-auto">{{ $t('projects.addProject') }}</h2> 
                 </div> 
                 <!-- END: Modal Header -->
                 
                 <!-- BEGIN: Modal Body -->
                 <div class="modal-body grid columns-12 gap-4 gap-y-3">
                     <div class="g-col-12 g-col-sm-12"> 
-                        <label class="form-label">ID Task</label>
-                        <input type="text" class="form-control" disabled placeholder="Titolo task" v-model="task.id">
+                        <label class="form-label">{{ $t('projects.idProject') }}</label>
+                        <input type="text" class="form-control" disabled :placeholder="$t('projects.idProject')" v-model="project.id">
                     </div>
 
                     <div class="g-col-12 g-col-sm-12"> 
-                        <label for="title" class="form-label">Titolo Task</label>
-                        <input id="title" type="text" class="form-control" placeholder="Titolo task" v-model="task.name">
-                    </div>
-                    
-                    <div class="g-col-12 g-col-sm-6"> 
-                        <label for="start" class="form-label">Inizio Task</label>
-                        <!-- <input id="start" class="datepicker form-control" data-single-mode="true" v-model="task.start"> -->
-                        <VueDatePicker v-model="task.start" format="yyyy-MM-dd" :enable-time-picker="false"
-                            input-class-name="form-control" auto-apply locale="it-IT"></VueDatePicker>
-                    </div>
-                    
-                    <div class="g-col-12 g-col-sm-6"> 
-                        <label for="end" class="form-label">Fine Task</label>
-                        <VueDatePicker v-model="task.end" format="yyyy-MM-dd" :enable-time-picker="false"
-                            input-class-name="form-control" auto-apply locale="it-IT" :min-date="task.start"></VueDatePicker>
-                    </div>
-
-                    <div class="g-col-12 g-col-sm-12"> 
-                        <DependenciesTask :modelValue="task.dependencies" @update:tom-select-dependencies="handleDependencies"/>
+                        <label for="title" class="form-label">{{ $t('projects.nameProject') }}</label>
+                        <input id="title" type="text" class="form-control" :placeholder="$t('projects.nameProject')" v-model="project.name">
                     </div>
                     
                 </div> 
@@ -42,8 +25,8 @@
                 
                 <!-- BEGIN: Modal Footer -->
                 <div class="modal-footer text-end"> 
-                    <button type="button" id="closeButton" data-bs-dismiss="modal" class="btn btn-outline-secondary w-20 me-1">Chiudi</button> 
-                    <button type="button" class="btn btn-primary w-20" @click="saveData" :disabled="isButtonDisabled">Salva</button> 
+                    <button type="button" id="close-button-project" data-bs-dismiss="modal" class="btn btn-outline-secondary w-20 me-1">{{ $t('general.close') }}</button> 
+                    <button type="button" class="btn btn-primary w-20" @click="saveData" :disabled="isButtonDisabled">{{ $t('general.save') }}</button> 
                 </div> 
                 <!-- END: Modal Footer -->
             </div>
@@ -53,40 +36,18 @@
 
 <script lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import { useGanttStore } from '@/stores/gantt'
-import type { Task } from '@/models/gantt'
-import DependenciesTask from '@/components/DependenciesTask.vue'
+import { useProjectsStore } from '@/stores/projects'
+import type { Project } from '@/models/gantt'
 
 export default {
-    name: "AddTaskModal", 
-    components: {
-        DependenciesTask
-    },
+    name: "AddProjectModal", 
     data() {
         return {
-            ganttStore: useGanttStore(),
-            task: {
-                // id: '',
-                // name: '',
-                // start: '',
-                // end: '',
-                // progress: 0,
-                // dependencies: []
-                id: 'Task 2',
-                name: 'Redesign website',
-                start: '2024-01-05',
-                end: '2024-01-19',
-                progress: 0,
-                dependencies: [],
-            } as Task,
-        }
-    },
-    watch: {
-        tasks: {
-            handler(newTask, oldTask) {
-                console.log('Task modified:', newTask)
-            },
-            deep: true // This enables deep watching for nested properties of the task object
+            projectStore: useProjectsStore(),
+            project: {
+                id: '',
+                name: ''
+            } as Project,
         }
     },
     mounted() {
@@ -100,34 +61,25 @@ export default {
     },
     methods: {
         setID() {
-            this.task.id = uuidv4()
+            this.project.id = uuidv4()
         },
         clearData() {
-            this.task = {
+            this.project = {
                 id: '',
-                name: '',
-                start: '',
-                end: '',
-                progress: 0,
-                dependencies: []
+                name: ''
             }
         },
         async saveData() {
-            await this.ganttStore.addTask(this.task)
-            const el = document.getElementById('closeButton') as HTMLElement
+            await this.projectStore.addProject(this.project)
+            const el = document.getElementById('close-button-project') as HTMLElement
             el.click()
         },
-        handleDependencies(dependencies: any) {
-            dependencies.forEach((element: any) => {
-                this.task.dependencies.push(element)
-            })
-        }
         
     },
     computed: {
         isButtonDisabled() {
-            const { id, name, start, end } = this.task
-            return !id || !name || !start || !end
+            const { id, name } = this.project
+            return !id || !name
         }
     }
 }

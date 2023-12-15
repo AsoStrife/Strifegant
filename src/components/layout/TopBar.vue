@@ -3,7 +3,7 @@
         class="top-bar-boxed border-bottom border-theme-2 dark-border-dark-3 mt-n7 mt-md-n5 mx-n3 mx-sm-n8 px-3 px-sm-8 mb-12">
         <div class="h-full d-flex align-items-center">
             <!-- BEGIN: Logo -->
-            <router-link to="" class="-intro-x d-none d-md-flex">
+            <router-link to="/" class="-intro-x d-none d-md-flex">
                 <img alt="Icewall Bootstrap HTML Admin Template" class="w-6" src="@/assets/images/logo.svg">
                 <span class="text-white fs-lg ms-3"> Strifegantt  </span>
             </router-link>

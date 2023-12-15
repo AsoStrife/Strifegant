@@ -3,9 +3,9 @@
         <h2 class="fs-lg fw-medium me-auto"> </h2>
         <div class="w-full w-sm-auto d-flex mt-4 mt-sm-0">
 
-            <button class="btn btn-secondary shadow-md d-flex align-items-center me-2" data-bs-toggle="modal"
-                data-bs-target="#add-task-modal">
-                Aggiungi Progetto <i class="fa-solid fa-plus ms-3"></i>
+            <button class="btn btn-secondary shadow-md d-flex align-items-center me-2"  data-bs-toggle="modal"
+                data-bs-target="#add-project-modal">
+                {{ $t('projects.addProject')}} <i class="fa-solid fa-plus ms-3"></i>
             </button>
 
         </div>
@@ -18,7 +18,7 @@
             <div class="intro-y box">
                 <div class="p-5">
                     <div class="alert alert-secondary d-flex align-items-center mb-2" role="alert"> 
-                        <i class="fa-solid fa-circle-exclamation me-3"></i> Seleziona un progetto per cominciare
+                        <i class="fa-solid fa-circle-exclamation me-3"></i> {{ $t('projects.selectProjectAlert') }}
                     </div>
                 </div>
             </div>

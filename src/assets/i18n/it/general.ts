@@ -4,8 +4,12 @@ const general = {
     dashboard_submenu_1: "Elemento 1",
     dashboard_submenu_2: "Elemento 2",
     profile: "Profilo", 
-    logout: "Logout", 
-    breadcrumbs: "Home"
+    
+    breadcrumbs: "Home",
+
+    save: "Salva", 
+    close: "Chiudi",
+    logout: "Logout" 
 }
 
 export default general

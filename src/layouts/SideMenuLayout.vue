@@ -12,8 +12,8 @@
         </div>
     </div>
 
-    <AddTaskModal id="add-task-modal" @close-add-task-modal="closeAddTaskModal"/>
-    <Project id="add-task-modal" @close-add-task-modal="closeAddProjectModal"/>
+    <AddTaskModal @close-add-task-modal="closeAddTaskModal"/>
+    <AddProjectModal @close-add-task-modal="closeAddProjectModal"/>
     
 </template>
 
@@ -22,6 +22,7 @@ import MobileMenu from '@/components/layout/MobileMenu.vue'
 import SideNav from '@/components/layout/SideNav.vue'
 import TopBar from '@/components/layout/TopBar.vue';
 import AddTaskModal from '@/components/AddTaskModal.vue'
+import AddProjectModal from '@/components/AddProjectModal.vue'
 
 export default {
     name: "SideMenuLayout",
@@ -29,20 +30,21 @@ export default {
         MobileMenu,
         SideNav,
         TopBar,
-        AddTaskModal
+        AddTaskModal,
+        AddProjectModal
     },
     methods: {
         closeAddTaskModal() {
-            const modal = new bootstrap.Modal(document.getElementById('addTaskModal'), {});
+            // const modal = new bootstrap.Modal(document.getElementById('add-task-modal'), {});
 
-            console.log(modal)
-            modal.hide()
+            // console.log(modal)
+            // modal.hide()
         },
         closeAddProjectModal() {
-            const modal = new bootstrap.Modal(document.getElementById('addProjectModal'), {});
+            // const modal = new bootstrap.Modal(document.getElementById('add-project-modal'), {});
 
-            console.log(modal)
-            modal.hide()
+            // console.log(modal)
+            // modal.hide()
         }
     }
 }

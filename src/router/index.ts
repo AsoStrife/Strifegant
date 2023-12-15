@@ -18,6 +18,14 @@ const router = createRouter({
                     meta: {
                         breadcrumbs: breadcrumbs.dashboard
                     }
+                },
+                {
+                    name: 'project',
+                    path: '/project/:id',
+                    component: () => import('@/views/ProjectView.vue'),
+                    meta: {
+                        breadcrumbs: breadcrumbs.dashboard
+                    }
                 }
             ]
         }
