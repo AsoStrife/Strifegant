@@ -46,7 +46,7 @@ export default {
         return {
             project: {} as Project | undefined, 
             currentPath: '' as string,
-            projectID: '' as string | string[],
+            projectID: '' as string,
             projectStore: useProjectsStore(),
 
             tasks: [],
@@ -103,8 +103,11 @@ export default {
         },
         fetchData() {
             this.currentPath = this.$route.path
-            this.projectID = this.$route.params.id
-            this.project = this.projectStore.project(this.projectID.toString())
+
+            this.projectID = this.$route.params.id as string
+            
+            this.project = this.projectStore.project(this.projectID)
+            
         }
     }
 }
