@@ -37,7 +37,8 @@ const router = createRouter({
                     component: () => import('@/views/HomeView.vue'),
                     meta: {
                         breadcrumbs: breadcrumbs.dashboard,
-                        requiresAuth: false
+                        requiresAuth: true,
+                        
                     }
                 },
                 {
@@ -46,7 +47,7 @@ const router = createRouter({
                     component: () => import('@/views/ProjectView.vue'),
                     meta: {
                         breadcrumbs: breadcrumbs.dashboard,
-                        requiresAuth: false
+                        requiresAuth: true
                     }
                 }
             ]
