@@ -1,5 +1,5 @@
 <template>
-    <div class="mobile-menu d-md-none">
+    <!-- <div class="mobile-menu d-md-none">
         <div class="mobile-menu-bar">
             <router-link to="" class="d-flex me-auto">
                 <img alt="Icewall Bootstrap HTML Admin Template" class="w-6" src="@/assets/images/logo.svg">
@@ -33,7 +33,7 @@
                 </ul>
             </li>
         </ul>
-    </div>
+    </div> -->
 </template>
 <script lang="ts">
 import cash from "cash-dom"

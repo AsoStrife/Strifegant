@@ -44,7 +44,7 @@ export const useProjectsStore = defineStore('projects', {
             task.start = dayjs(task.start).format('YYYY-MM-DD')
             task.end = dayjs(task.end).format('YYYY-MM-DD')
 
-            this.projects[index].tasks.push(task)
+            this._projects[index].tasks.push(task)
         },
         updateTask(id: string) {
 

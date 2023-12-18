@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import { useGanttStore } from '@/stores/gantt'
+import { useProjectsStore } from "@/stores/projects"
 import type { Task } from '@/models/gantt'
 import DependenciesTask from '@/components/DependenciesTask.vue'
 
@@ -64,7 +64,7 @@ export default {
     },
     data() {
         return {
-            ganttStore: useGanttStore(),
+            projectsStore: useProjectsStore(),
             task: {
                 // id: '',
                 // name: '',
@@ -79,17 +79,15 @@ export default {
                 progress: 0,
                 dependencies: [],
             } as Task,
+            projectID: ''
         }
     },
     watch: {
-        tasks: {
-            handler(newTask, oldTask) {
-                console.log('Task modified:', newTask)
-            },
-            deep: true // This enables deep watching for nested properties of the task object
-        }
+        '$route.params': 'updateProjectID',
     },
     mounted() {
+        this.updateProjectID()
+        
         this.$el.addEventListener('show.bs.modal', this.setID)
         this.$el.addEventListener('hide.bs.modal', this.clearData)
 
@@ -110,10 +108,10 @@ export default {
                 end: '',
                 progress: 0,
                 dependencies: []
-            }
+            } as Task
         },
         async saveData() {
-            await this.ganttStore.addTask(this.task)
+            await this.projectsStore.addTask(this.projectID, this.task)
             const el = document.getElementById('close-button-tasks') as HTMLElement
             el.click()
         },
@@ -121,8 +119,10 @@ export default {
             dependencies.forEach((element: any) => {
                 this.task.dependencies.push(element)
             })
+        },
+        updateProjectID() {
+            this.projectID = this.$route.params.id as string
         }
-        
     },
     computed: {
         isButtonDisabled() {

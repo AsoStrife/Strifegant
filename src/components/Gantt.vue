@@ -1,5 +1,5 @@
 <template>
-    <div class="p-5" v-if="gantt == undefined">
+    <div class="p-5" v-if="ganttSVG == undefined">
         <div class="alert alert-secondary d-flex align-items-center mb-2" role="alert">
             <i class="fa-solid fa-circle-exclamation me-3"></i>
             {{ $t('projects.noTaksAlert') }}
@@ -24,11 +24,14 @@ export default {
             default: ''
         }
     }, 
+    watch: {
+        'projectID': 'refreshProjectID',
+    },
     data() {
         return {
             project: {} as Project | undefined,
             projectsStore: useProjectsStore(), 
-            ganttSVG: {} as Object | Gantt
+            ganttSVG: {} as Gantt | undefined
         }
     },
     mounted() {
@@ -39,16 +42,25 @@ export default {
         }
         
         this.projectsStore.$subscribe(() => {
-            if(this.ganttSVG== undefined )
+            console.log(this.ganttSVG)
+            if(this.ganttSVG == undefined ){
+                console.log("dentro if")
                 this.initializeGantt()
-            
-            // const tmp = this.projectsStore.tasks.map(a => Object.assign({}, a))
-            // this.ganttSVG.refresh(tmp)
+            }
+
+            const tmp = this.projectsStore.tasks(this.projectID)
+            this.ganttSVG.refresh(tmp)
         })
     },
     methods: {
         initializeGantt() {
-            this.ganttSVG= new Gantt("#gantt", this.projectsStore.tasks(this.projectID), {
+            console.log("dentro initialize")
+            const tasks = this.projectsStore.tasks(this.projectID)
+            
+            if(tasks?.length == 0)
+                return 
+
+            this.ganttSVG = new Gantt("#gantt", tasks, {
                 header_height: 50,
                 column_width: 30,
                 step: 24,
@@ -69,15 +81,18 @@ export default {
                 },
                 on_progress_change: function (task: any, progress: any) {
                     console.log(task, progress);
-                },
-                on_view_change: function (mode: any) {
-                    console.log(mode);
                 }
             })
         },
         fetchData() {            
-            this.ganttSVG = this.projectsStore.project(this.projectID)
+            this.project = this.projectsStore.project(this.projectID)   
+        }, 
+        refreshProjectID() {
+            // this.ganttSVG.
             
+            this.ganttSVG.clear()
+            
+            this.initializeGantt()
         }
     }
 }

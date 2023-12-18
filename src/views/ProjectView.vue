@@ -5,7 +5,7 @@
         </h2>
         <div class="w-full w-sm-auto d-flex mt-4 mt-sm-0">
             
-            <button class="btn btn-secondary shadow-md d-flex align-items-center me-2" data-bs-toggle="modal"
+            <button class="btn btn-secondary shadow-md d-flex align-items-center me-2"   data-bs-toggle="modal"
                 data-bs-target="#add-task-modal">
                 {{ $t('projects.addTaskButton') }} 
                 <i class="fa-solid fa-plus ms-3"></i>
@@ -19,7 +19,7 @@
         <div class="intro-y col-12 col-lg-12">
             
             <div class="intro-y box">
-                <!-- <GanttVue :projectID="projectID" />                 -->
+                <GanttVue :projectID="projectID" v-if="projectID != ''"/>                
             </div>
 
         </div>
@@ -45,7 +45,7 @@ export default {
         }
     },
     watch: {
-        '$route': 'fetchData',
+        '$route.params': 'fetchData',
     },
     mounted() {
         this.fetchData()
