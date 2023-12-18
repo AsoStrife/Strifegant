@@ -1,15 +1,15 @@
 const general = {
-    dashboard_h2: 'New dashboard',
-    dashboard_menu: "Dashboard", 
-    dashboard_submenu_1: "Elemento 1",
-    dashboard_submenu_2: "Elemento 2",
     profile: "Profilo", 
     
     breadcrumbs: "Home",
 
     save: "Salva", 
     close: "Chiudi",
-    logout: "Logout" 
+    logout: "Logout",
+    err_404: '404', 
+    err_404_t1: 'Ops. Questa pagina sembra essere sparita.', 
+    err_404_t2: 'Potresti aver digitato l\'indirizzo in modo errato o la pagina potrebbe essere stata spostata.',
+    backToHome: 'Torna alla home'
 }
 
 export default general

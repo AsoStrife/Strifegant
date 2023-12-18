@@ -3,7 +3,9 @@ const projects = {
     addProject: "Aggiungi progetto",
     idProject: "ID progetto", 
     nameProject: "Nome progetto",
-    selectProjectAlert: "Seleziona un progetto per cominciare"
+    noTaksAlert: "Non sono presenti task per questo progetto",
+    selectProjectAlert: "Seleziona un progetto dalla barra laterale per cominciare",
+    addTaskButton: "Aggiungi un task"
 }
 
 export default projects

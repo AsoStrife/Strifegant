@@ -37,7 +37,7 @@
 <script lang="ts">
 import { v4 as uuidv4 } from 'uuid'
 import { useProjectsStore } from '@/stores/projects'
-import type { Project } from '@/models/gantt'
+import type { Project, Task } from '@/models/gantt'
 
 export default {
     name: "AddProjectModal", 
@@ -46,7 +46,8 @@ export default {
             projectStore: useProjectsStore(),
             project: {
                 id: '',
-                name: ''
+                name: '',
+                tasks: [] as Task[]
             } as Project,
         }
     },
@@ -66,8 +67,9 @@ export default {
         clearData() {
             this.project = {
                 id: '',
-                name: ''
-            }
+                name: '', 
+                tasks: []
+            } as Project
         },
         async saveData() {
             await this.projectStore.addProject(this.project)
