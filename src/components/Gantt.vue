@@ -26,6 +26,7 @@ export default {
     }, 
     watch: {
         'projectID': 'refreshProjectID',
+
     },
     data() {
         return {
@@ -37,24 +38,23 @@ export default {
     mounted() {
         this.fetchData()
 
-        if (this.projectsStore.tasks.length > 0){
+        if (this.project.tasks.length > 0){
             this.initializeGantt()
         }
         
-        this.projectsStore.$subscribe(() => {
-            console.log(this.ganttSVG)
+        this.projectsStore.$subscribe((mutation, state) => {
+            
             if(this.ganttSVG == undefined ){
-                console.log("dentro if")
+                console.log(this.ganttSVG)
                 this.initializeGantt()
             }
 
-            const tmp = this.projectsStore.tasks(this.projectID)
+            const tmp = this.projectsStore.tasks(this.projectID).map(a => Object.assign({}, a))
             this.ganttSVG.refresh(tmp)
         })
     },
     methods: {
         initializeGantt() {
-            console.log("dentro initialize")
             const tasks = this.projectsStore.tasks(this.projectID)
             
             if(tasks?.length == 0)
@@ -88,12 +88,11 @@ export default {
             this.project = this.projectsStore.project(this.projectID)   
         }, 
         refreshProjectID() {
-            // this.ganttSVG.
             
             this.ganttSVG.clear()
             
             this.initializeGantt()
-        }
+        },
     }
 }
 

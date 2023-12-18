@@ -34,7 +34,10 @@
                     </div>
 
                     <div class="g-col-12 g-col-sm-12"> 
-                        <DependenciesTask :modelValue="task.dependencies" @update:tom-select-dependencies="handleDependencies"/>
+                        <DependenciesTask 
+                            :modelValue="task.dependencies" 
+                            @update:tom-select-dependencies="handleDependencies"
+                            :projectID="projectID" />
                     </div>
                     
                 </div> 

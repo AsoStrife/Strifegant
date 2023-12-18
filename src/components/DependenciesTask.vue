@@ -9,17 +9,23 @@
 
 <script lang="ts">
 import TomSelect from "tom-select"
-import { useGanttStore } from '@/stores/gantt'
+import { useProjectsStore } from '@/stores/projects'
 
 export default {
     name: 'DependenciesTask',
-    props: ['modelValue'],
+    // props: ['modelValue', 'projectID'],
+    props: {
+        projectID: {
+            type: String,
+            default: ''
+        }
+    },
     emits: ['update:tom-select-dependencies'],
     data() {
         return {
             ts: {} as any,
             options: {} as any,
-            ganttStore: useGanttStore(),
+            projectsStore: useProjectsStore(),
             task: {
                 dependencies: []
             },
@@ -37,8 +43,8 @@ export default {
     mounted() {
         this.initialize()
 
-        this.ganttStore.$subscribe(() => {
-            // this.updateOptions()
+        this.projectsStore.$subscribe(() => {
+            this.updateOptions()
         })
 
 
@@ -61,7 +67,8 @@ export default {
             this.ts.on('item_remove', this.handleChange)
         },
         updateOptions() {
-            const options = this.ganttStore.getTasksTomSelect()
+            console.log(this.projectID)
+            const options = this.projectsStore.getTasksTomSelect(this.projectID)
 
             this.ts.clear(true)
             this.ts.clearOptions()
@@ -76,6 +83,7 @@ export default {
         handleChange() {
             this.$emit('update:tom-select-dependencies', this.ts.getValue())
         }
+        
     }
 }
 </script>
