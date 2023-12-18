@@ -35,7 +35,7 @@
                             <hr class="dropdown-divider border-theme-12 dark-border-dark-3">
                         </li>
                         <li>
-                            <router-link to="" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> 
+                            <router-link to="logout" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> 
                                 <i class="fa-solid fa-arrow-right-from-bracket w-4 h-4 me-2"></i> {{ $t('general.logout') }} 
                             </router-link>
                         </li>
