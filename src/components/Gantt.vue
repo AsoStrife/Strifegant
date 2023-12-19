@@ -73,6 +73,7 @@ export default {
                 language: 'it',
                 custom_popup_html: null,
                 on_click: function (task: any) {
+                    alert("click")
                 },
                 on_date_change: (task: any, start: any, end: any) => {
                     this.projectsStore.updateTaskDates(this.projectID, task, start, end)

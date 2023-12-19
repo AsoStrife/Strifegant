@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <!-- BEGIN: Modal Header -->
                 <div class="modal-header">
-                    <h2 class="fw-medium fs-base me-auto">{{ $t('tasks.addTask') }}</h2> 
+                    <h2 class="fw-medium fs-base me-auto">{{ $t('tasks.updateTask') }}</h2> 
                 </div> 
                 <!-- END: Modal Header -->
                 
@@ -26,7 +26,7 @@
                         <VueDatePicker v-model="task.start" format="yyyy-MM-dd" :enable-time-picker="false"
                             input-class-name="form-control" auto-apply locale="it-IT"></VueDatePicker>
                     </div>
-
+                    
                     <div class="g-col-12 g-col-sm-6"> 
                         <label for="end" class="form-label">{{ $t('tasks.endTask') }}</label>
                         <VueDatePicker v-model="task.end" format="yyyy-MM-dd" :enable-time-picker="false"
@@ -80,7 +80,7 @@ export default {
                 name: '',
                 start: '',
                 end: '',
-                progress: 0,
+                progress: 10,
                 dependencies: []
             } as Task,
             projectID: ''
