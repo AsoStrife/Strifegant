@@ -13,34 +13,35 @@ import { useProjectsStore } from '@/stores/projects'
 
 export default {
     name: 'DependenciesTask',
-    // props: ['modelValue', 'projectID'],
-    props: {
-        projectID: {
-            type: String,
-            default: ''
-        }
+    props: ['modelValue'],
+    watch: {
+        '$route.params': 'updateProjectID',
+        'modelValue': 'updateOptions'
     },
     emits: ['update:tom-select-dependencies'],
     data() {
         return {
-            ts: {} as any,
+            ts: undefined as any,
             options: {} as any,
             projectsStore: useProjectsStore(),
             task: {
                 dependencies: []
             },
-            selectedValues: []
+            selectedValues: [],
+            projectID: ''
         }
     },
-    watch: {
-        modelValue(newValue) {
-            this.updateOptions()
-        },
-        options(newOptions) {
-            this.updateOptions()
-        }
-    },
+    // watch: {
+    //     modelValue(newValue) {
+    //         this.updateOptions()
+    //     },
+    //     options(newOptions) {
+    //         this.updateOptions()
+    //     }
+    // },
     mounted() {
+        this.updateProjectID()
+
         this.initialize()
 
         this.projectsStore.$subscribe(() => {
@@ -67,8 +68,7 @@ export default {
             this.ts.on('item_remove', this.handleChange)
         },
         updateOptions() {
-            console.log(this.projectID)
-            const options = this.projectsStore.getTasksTomSelect(this.projectID)
+            const options = this.projectsStore.getTasksTomSelect(this.projectID).map(a => Object.assign({}, a))
 
             this.ts.clear(true)
             this.ts.clearOptions()
@@ -82,6 +82,13 @@ export default {
         },
         handleChange() {
             this.$emit('update:tom-select-dependencies', this.ts.getValue())
+        },
+        updateProjectID() {
+            this.projectID = this.$route.params.id as string
+            
+            if(this.ts != undefined)
+                this.updateOptions()
+
         }
         
     }

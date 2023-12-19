@@ -55,7 +55,10 @@ export const useProjectsStore = defineStore('projects', {
         getTasksTomSelect(projectID: string) {
             const index = this._projects.findIndex(project => project.id === projectID)
 
-            const options = this._projects[index].tasks.map((item: Task) => ({
+            if(index == -1)
+                return []
+            
+                const options = this._projects[index].tasks.map((item: Task) => ({
                 value: item.id,
                 text: item.name,
             }))

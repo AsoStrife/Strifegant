@@ -37,7 +37,7 @@
                         <DependenciesTask 
                             :modelValue="task.dependencies" 
                             @update:tom-select-dependencies="handleDependencies"
-                            :projectID="projectID" />
+                            />
                     </div>
                     
                 </div> 
@@ -69,18 +69,18 @@ export default {
         return {
             projectsStore: useProjectsStore(),
             task: {
-                // id: '',
-                // name: '',
-                // start: '',
-                // end: '',
-                // progress: 0,
-                // dependencies: []
-                id: 'Task 2',
-                name: 'Redesign website',
-                start: '2024-01-05',
-                end: '2024-01-19',
+                id: '',
+                name: '',
+                start: '',
+                end: '',
                 progress: 0,
-                dependencies: [],
+                dependencies: []
+                // id: 'Task 2',
+                // name: 'Redesign website',
+                // start: '2024-01-05',
+                // end: '2024-01-19',
+                // progress: 0,
+                // dependencies: [],
             } as Task,
             projectID: ''
         }
