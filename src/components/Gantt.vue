@@ -30,9 +30,9 @@ export default {
     },
     data() {
         return {
-            project: {} as Project | undefined,
+            project: undefined as Project | undefined,
             projectsStore: useProjectsStore(), 
-            ganttSVG: {} as Gantt | undefined
+            ganttSVG: undefined as Gantt | undefined
         }
     },
     mounted() {
@@ -45,7 +45,6 @@ export default {
         this.projectsStore.$subscribe((mutation, state) => {
             
             if(this.ganttSVG == undefined ){
-                console.log(this.ganttSVG)
                 this.initializeGantt()
             }
 
@@ -74,13 +73,14 @@ export default {
                 language: 'it',
                 custom_popup_html: null,
                 on_click: function (task: any) {
-                    console.log(task);
                 },
-                on_date_change: function (task: any, start: any, end: any) {
-                    console.log(task, start, end);
+                on_date_change: (task: any, start: any, end: any) => {
+                    this.projectsStore.updateTaskDates(this.projectID, task, start, end)
                 },
                 on_progress_change: function (task: any, progress: any) {
-                    console.log(task, progress);
+                    this.projectsStore.updateTaskProgress(this.projectID, task, progress)
+                },
+                on_view_change: function(mode: any) {
                 }
             })
         },
@@ -90,7 +90,7 @@ export default {
         refreshProjectID() {
             
             this.ganttSVG.clear()
-            
+            this.ganttSVG = undefined
             this.initializeGantt()
         },
     }

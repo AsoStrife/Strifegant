@@ -34,8 +34,11 @@
                     </div>
 
                     <div class="g-col-12 g-col-sm-12"> 
-                        <DependenciesTask 
+                        <!-- <DependenciesTask 
                             :modelValue="task.dependencies" 
+                            @update:tom-select-dependencies="handleDependencies"
+                            /> -->
+                        <DependenciesTask 
                             @update:tom-select-dependencies="handleDependencies"
                             />
                     </div>
@@ -75,12 +78,6 @@ export default {
                 end: '',
                 progress: 0,
                 dependencies: []
-                // id: 'Task 2',
-                // name: 'Redesign website',
-                // start: '2024-01-05',
-                // end: '2024-01-19',
-                // progress: 0,
-                // dependencies: [],
             } as Task,
             projectID: ''
         }

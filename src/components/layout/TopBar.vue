@@ -3,8 +3,8 @@
         class="top-bar-boxed border-bottom border-theme-2 dark-border-dark-3 mt-n7 mt-md-n5 mx-n3 mx-sm-n8 px-3 px-sm-8 mb-12">
         <div class="h-full d-flex align-items-center">
             <!-- BEGIN: Logo -->
-            <router-link to="/" class="-intro-x d-none d-md-flex">
-                <img alt="Icewall Bootstrap HTML Admin Template" class="w-6" src="@/assets/images/logo.svg">
+            <router-link to="/dashboard" class="-intro-x d-none d-md-flex">
+                <img alt="" class="w-6" src="@/assets/images/logo.svg">
                 <span class="text-white fs-lg ms-3"> Strifegantt  </span>
             </router-link>
             <!-- END: Logo -->
@@ -16,7 +16,7 @@
             <div class="account-menu intro-x dropdown w-8 h-8">
                 <div class="dropdown-toggle w-8 h-8 rounded-pill overflow-hidden shadow-lg image-fit zoom-in" role="button"
                     aria-expanded="false" data-bs-toggle="dropdown">
-                    <img alt="Icewall Bootstrap HTML Admin Template" src="@/assets/images/profile-13.jpg">
+                    <img alt="" src="@/assets/images/profile-13.jpg">
                 </div>
                 <div class="dropdown-menu w-56">
                     <ul class="dropdown-content bg-theme-11 dark-bg-dark-6">

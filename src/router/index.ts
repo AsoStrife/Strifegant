@@ -12,28 +12,12 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
-            path: '/login',
-            name: 'login',
-            component: () => import('@/views/auth/LoginView.vue'),
-            meta: {
-                requiresAuth: false
-            }
-        },
-        {
-            path: '/logout',
-            name: 'logout',
-            component: () => import('@/views/auth/LogoutView.vue'),
-            meta: {
-                requiresAuth: true
-            }
-        },
-        {
             path: '/',
             component: SideMenuLayout,
             children: [
                 {
                     name: 'dashboard',
-                    path: '/',
+                    path: '/dashboard',
                     component: () => import('@/views/HomeView.vue'),
                     meta: {
                         breadcrumbs: breadcrumbs.dashboard,
@@ -51,6 +35,22 @@ const router = createRouter({
                     }
                 }
             ]
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: () => import('@/views/auth/LoginView.vue'),
+            meta: {
+                requiresAuth: false
+            }
+        },
+        {
+            path: '/logout',
+            name: 'logout',
+            component: () => import('@/views/auth/LogoutView.vue'),
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             name: 'Error404',

@@ -40,16 +40,35 @@ export const useProjectsStore = defineStore('projects', {
         },
         addTask(projectID: string, task: Task) {
             const index = this._projects.findIndex(project => project.id === projectID)
-
+            
+            if(index == -1)
+                return 
+            
             task.start = dayjs(task.start).format('YYYY-MM-DD')
             task.end = dayjs(task.end).format('YYYY-MM-DD')
 
             this._projects[index].tasks.push(task)
         },
-        updateTask(id: string) {
+        updateTaskDates(projectID: string, task: Task, start: string, end: string) {
+            const indexProject = this._projects.findIndex(project => project.id === projectID)
+
+            if(indexProject == -1)
+                return 
+            
+            const indexTask = this._projects[indexProject].tasks.findIndex(t => t.id === task.id)
+            
+            if(indexTask == -1)
+                return 
+            
+            this._projects[indexProject].tasks[indexTask].start = dayjs(start).format('YYYY-MM-DD')
+            this._projects[indexProject].tasks[indexTask].end = dayjs(end).format('YYYY-MM-DD')
+                
+            
+        },
+        updateTaskProgress(projectID: string, task: Task, progress: number){
 
         },
-        deleteTask(id: string) {
+        deleteTask(projectID: string, task: Task) {
             
         },
         getTasksTomSelect(projectID: string) {

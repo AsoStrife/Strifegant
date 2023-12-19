@@ -15,8 +15,7 @@ export default {
     name: 'DependenciesTask',
     props: ['modelValue'],
     watch: {
-        '$route.params': 'updateProjectID',
-        'modelValue': 'updateOptions'
+        '$route.params': 'updateProjectID'
     },
     emits: ['update:tom-select-dependencies'],
     data() {
@@ -31,14 +30,6 @@ export default {
             projectID: ''
         }
     },
-    // watch: {
-    //     modelValue(newValue) {
-    //         this.updateOptions()
-    //     },
-    //     options(newOptions) {
-    //         this.updateOptions()
-    //     }
-    // },
     mounted() {
         this.updateProjectID()
 
