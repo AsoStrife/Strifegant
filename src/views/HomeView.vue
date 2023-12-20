@@ -28,7 +28,18 @@
 </template>
 
 <script lang="ts">
-export default {
+import { useProjectsStore } from "@/stores/projects"
 
+export default {
+    name: 'HomeView',
+    data() {
+        return {
+            projectsStore: useProjectsStore(),
+        }
+    },
+    mounted() {
+        console.log('HomeView mounted')
+        this.projectsStore.getProjects()
+    }
 }
 </script>

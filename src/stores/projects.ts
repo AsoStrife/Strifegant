@@ -1,8 +1,10 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { Project, Task, GanttConfig } from '@/models/gantt'
-import { useStorage } from '@vueuse/core'
+import { useLocalStorage, useStorage } from '@vueuse/core'
 import dayjs from 'dayjs'
+import { db } from "@/firebase"
+import { collection, addDoc, getDocs, updateDoc, doc, onSnapshot, arrayUnion, where, query } from "firebase/firestore"; 
 
 export const useProjectsStore = defineStore('projects', {
     state: () => {
@@ -13,6 +15,7 @@ export const useProjectsStore = defineStore('projects', {
     getters: {
         projects: (state) => state._projects, 
         project: (state) => (projectID: string) => {
+            console.log("projectID", projectID)
             return state._projects.find(item => item.id === projectID)
         }, 
         tasks: (state) => (projectID: string) => {
@@ -25,8 +28,27 @@ export const useProjectsStore = defineStore('projects', {
         }
     },
     actions: {
-        addProject(project: Project) {
-            this._projects.push(project)
+        async getProjects() {
+            this._projects = []
+            
+            onSnapshot(collection(db, "projects"), (doc) => {
+                doc.forEach((doc) =>
+                    this._projects.push(doc.data() as Project)
+                );
+            });
+            console.log(this._projects);
+            /*
+            const projects = await getDocs(collection(db, "projects"));
+            console.log(" => ", projects);
+            projects.forEach((doc) => {
+                this._projects.push(doc.data() as Project)
+                console.log(doc.id, " => ", doc.data());
+            });
+            */
+        },
+        async addProject(project: Project) {
+            // this._projects.push(project)
+            await addDoc(collection(db, "projects"), project)
         },
         updateProject(project: Project) {
             const index = this._projects.findIndex(item => item.id === project.id);
@@ -38,17 +60,25 @@ export const useProjectsStore = defineStore('projects', {
         deleteProject(project: Project) {
             this._projects = this._projects.filter(item => item.id !== project.id)
         },
-        addTask(projectID: string, task: Task) {
-            const index = this._projects.findIndex(project => project.id === projectID)
-            
-            if(index == -1)
-                return 
-            
-            task.start = dayjs(task.start).format('YYYY-MM-DD')
-            task.end = dayjs(task.end).format('YYYY-MM-DD')
-
-            this._projects[index].tasks.push(task)
+        async addTask(projectID: string, task: Task) {
+            // Esegui una query per trovare il documento con il campo specificato
+            const querySnapshot = await getDocs(query(collection(db, "projects"), where("id", "==", projectID)));
+        
+            // Verifica se c'è un documento trovato
+            if (querySnapshot.empty) {
+                // Il documento non è stato trovato, gestisci di conseguenza
+                return;
+            }
+        
+            // Ottieni il riferimento al primo documento trovato
+            const docRef = querySnapshot.docs[0].ref;
+        
+            // Aggiorna il documento
+            await updateDoc(docRef, {
+                tasks: arrayUnion(task) // Aggiungi il nuovo task all'array senza duplicati
+            });
         },
+        
         updateTaskDates(projectID: string, task: Task, start: string, end: string) {
             const indexProject = this._projects.findIndex(project => project.id === projectID)
 

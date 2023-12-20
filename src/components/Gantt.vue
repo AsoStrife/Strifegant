@@ -38,7 +38,8 @@ export default {
     mounted() {
         this.fetchData()
 
-        if (this.project.tasks.length > 0){
+        console.log(this.project?.tasks)
+        if (this.project?.tasks?.length > 0){
             this.initializeGantt()
         }
         
@@ -48,7 +49,7 @@ export default {
                 this.initializeGantt()
             }
 
-            const tmp = this.projectsStore.tasks(this.projectID).map(a => Object.assign({}, a))
+            const tmp = this.projectsStore.tasks(this.projectID)?.map(a => Object.assign({}, a))
             this.ganttSVG.refresh(tmp)
         })
     },
@@ -85,14 +86,16 @@ export default {
                 }
             })
         },
-        fetchData() {            
-            this.project = this.projectsStore.project(this.projectID)   
+        async fetchData() {            
+            this.project = this.projectsStore.project(this.projectID)
         }, 
         refreshProjectID() {
+            if(this.ganttSVG != undefined) {
+                this.ganttSVG.clear()
+                this.ganttSVG = undefined
+                this.initializeGantt()
+            }
             
-            this.ganttSVG.clear()
-            this.ganttSVG = undefined
-            this.initializeGantt()
         },
     }
 }

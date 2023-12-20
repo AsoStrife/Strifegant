@@ -19,7 +19,7 @@
         <div class="intro-y col-12 col-lg-12">
             
             <div class="intro-y box">
-                <GanttVue :projectID="projectID" v-if="projectID != ''"/>                
+                <GanttVue :projectID="projectID"/>                
             </div>
 
         </div>
@@ -52,11 +52,11 @@ export default {
     },
     methods: {
 
-        fetchData() {
+        async fetchData() {
             this.currentPath = this.$route.path
 
             this.projectID = this.$route.params.id as string
-            
+
             this.project = this.projectStore.project(this.projectID)
 
             if(this.project == undefined)

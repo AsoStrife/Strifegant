@@ -17,7 +17,7 @@ const router = createRouter({
             children: [
                 {
                     name: 'dashboard',
-                    path: '/dashboard',
+                    path: '/',
                     component: () => import('@/views/HomeView.vue'),
                     meta: {
                         breadcrumbs: breadcrumbs.dashboard,
@@ -52,14 +52,14 @@ const router = createRouter({
                 requiresAuth: true
             }
         },
-        {
-            name: 'Error404',
-            path: '/:pathMatch(.*)*',
-            component: NotFoundPage,
-            meta: {
-                requiresAuth: false
-            }
-        }
+        // {
+        //     name: 'Error404',
+        //     path: '/:pathMatch(.*)*',
+        //     component: NotFoundPage,
+        //     meta: {
+        //         requiresAuth: false
+        //     }
+        // }
     ]
 })
 
