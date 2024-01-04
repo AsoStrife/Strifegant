@@ -50,7 +50,7 @@ export default {
             }
 
             const tmp = this.projectsStore.tasks(this.projectID)?.map(a => Object.assign({}, a))
-            
+
             const tasksConverted = tmp?.map(task => {
                 const startDate = task.start.seconds ? new Date(Number(task.start.seconds)*1000) : task.start
                 const endDate = task.end.seconds ? new Date(Number(task.end.seconds)*1000) : task.end
@@ -117,7 +117,7 @@ export default {
                     end = new Date(end)
                     this.projectsStore.updateTaskDates(this.projectID, task, start, end)
                 },
-                on_progress_change: function (task: any, progress: any) {
+                on_progress_change: (task: any, progress: any) => {
                     this.projectsStore.updateTaskProgress(this.projectID, task, progress)
                 },
                 on_view_change: function(mode: any) {
@@ -146,6 +146,8 @@ export default {
                 const toDeleteSvg = document.getElementById(this.oldTag) as HTMLElement
                 toDeleteSvg.remove()
 
+                this.initializeGantt()
+            } else {
                 this.initializeGantt()
             }
             

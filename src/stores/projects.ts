@@ -34,10 +34,8 @@ export const useProjectsStore = defineStore('projects', {
                     onSnapshot(collection(db, "projects"), (docs) => {
                         docs.forEach((doc) =>{
                             const data = doc.data() as Project;
-                            console.log(data)
 
                             const existingProjectIndex = this._projects.findIndex((p) => p.id == data.id);
-                            console.log(existingProjectIndex)
                             if (existingProjectIndex !== -1) {
                                 // Se il progetto esiste già, aggiorna i dati
                                 this._projects[existingProjectIndex] = data;
@@ -45,7 +43,6 @@ export const useProjectsStore = defineStore('projects', {
                                 // Se il progetto non esiste, aggiungi i nuovi dati
                                 this._projects.push(data);
                             }
-                            console.log(this._projects)
                         });
                     });
                     this._projects = this._projects.sort((a, b) => a.name.localeCompare(b.name))
@@ -141,7 +138,18 @@ export const useProjectsStore = defineStore('projects', {
             this.updateTask(projectID, this._projects[indexProject].tasks[indexTask])
         },
         updateTaskProgress(projectID: string, task: Task, progress: number){
+            const indexProject = this._projects.findIndex(project => project.id === projectID)
 
+            if(indexProject == -1)
+                return 
+            
+            const indexTask = this._projects[indexProject].tasks.findIndex(t => t.id === task.id)
+            
+            if(indexTask == -1)
+                return 
+            
+            this._projects[indexProject].tasks[indexTask].progress = progress
+            this.updateTask(projectID, this._projects[indexProject].tasks[indexTask])
         },
         deleteTask(projectID: string, task: Task) {
             
