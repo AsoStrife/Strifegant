@@ -5,7 +5,7 @@
             <!-- BEGIN: Logo -->
             <router-link to="/" class="-intro-x d-none d-md-flex">
                 <img alt="" class="w-6" src="@/assets/images/logo.svg">
-                <span class="text-white fs-lg ms-3"> Strifegantt  </span>
+                <span class="text-white fs-lg ms-3"> VisioGantt  </span>
             </router-link>
             <!-- END: Logo -->
             <!-- BEGIN: Breadcrumb -->

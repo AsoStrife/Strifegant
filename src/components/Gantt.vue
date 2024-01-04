@@ -50,6 +50,7 @@ export default {
             }
 
             const tmp = this.projectsStore.tasks(this.projectID)?.map(a => Object.assign({}, a))
+            
             const tasksConverted = tmp?.map(task => {
                 const startDate = task.start.seconds ? new Date(Number(task.start.seconds)*1000) : task.start
                 const endDate = task.end.seconds ? new Date(Number(task.end.seconds)*1000) : task.end
