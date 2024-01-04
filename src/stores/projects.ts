@@ -43,9 +43,10 @@ export const useProjectsStore = defineStore('projects', {
                                 // Se il progetto non esiste, aggiungi i nuovi dati
                                 this._projects.push(data);
                             }
+                            this._projects = this.projects.sort((a, b) => a.name.localeCompare(b.name));
                         });
                     });
-                    this._projects = this._projects.sort((a, b) => a.name.localeCompare(b.name))
+                    
                     resolve(this._projects)
                 }catch(error){
                     reject(error)
