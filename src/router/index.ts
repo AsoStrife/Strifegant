@@ -17,7 +17,7 @@ const router = createRouter({
             children: [
                 {
                     name: 'dashboard',
-                    path: '/',
+                    path: '',
                     component: () => import('@/views/HomeView.vue'),
                     meta: {
                         breadcrumbs: breadcrumbs.dashboard,
@@ -30,7 +30,7 @@ const router = createRouter({
                     path: '/project/:id',
                     component: () => import('@/views/ProjectView.vue'),
                     meta: {
-                        breadcrumbs: breadcrumbs.dashboard,
+                        breadcrumbs: breadcrumbs.project,
                         requiresAuth: true
                     }
                 }
@@ -52,14 +52,11 @@ const router = createRouter({
                 requiresAuth: true
             }
         },
-        // {
-        //     name: 'Error404',
-        //     path: '/:pathMatch(.*)*',
-        //     component: NotFoundPage,
-        //     meta: {
-        //         requiresAuth: false
-        //     }
-        // }
+        {
+            path: '/:pathMatch(.*)',
+            name: 'default',
+            redirect: '/'
+        }
     ]
 })
 
@@ -70,6 +67,7 @@ router.beforeEach((to) => {
     if (to.meta.requiresAuth && !authStore.isLogged) {
         return {
             path: '/login',
+            query: { redirect: to.fullPath }
         }
     }
 })

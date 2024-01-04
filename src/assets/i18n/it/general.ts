@@ -1,6 +1,6 @@
 const general = {
     profile: "Profilo", 
-    
+    project: "Progetto",
     breadcrumbs: "Home",
 
     save: "Salva", 

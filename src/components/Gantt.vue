@@ -1,13 +1,12 @@
 <template>
-    <div class="p-5" v-if="ganttSVG == undefined">
+    <div class="p-5" v-if="!ganttSVG">
         <div class="alert alert-secondary d-flex align-items-center mb-2" role="alert">
             <i class="fa-solid fa-circle-exclamation me-3"></i>
             {{ $t('projects.noTaksAlert') }}
         </div>
     </div>
-    <div class="d-flex flex-column flex-sm-row align-items-center p-5 border-bottom border-gray-200 dark-border-dark-5">
-
-        <svg id="gantt"></svg>
+    <div class="d-flex flex-column flex-sm-row align-items-center p-5 border-bottom border-gray-200 dark-border-dark-5" ref="ganttRef">
+        <!-- <svg :id="oldTag"></svg> -->
     </div>
 </template>
 
@@ -33,7 +32,8 @@ export default {
         return {
             project: undefined as Project | undefined,
             projectsStore: useProjectsStore(), 
-            ganttSVG: undefined as Gantt | undefined
+            ganttSVG: undefined as Gantt | undefined,
+            oldTag: 'gantt'
         }
     },
     mounted() {
@@ -50,10 +50,24 @@ export default {
             }
 
             const tmp = this.projectsStore.tasks(this.projectID)?.map(a => Object.assign({}, a))
-            this.ganttSVG.refresh(tmp)
+            const tasksConverted = tmp?.map(task => {
+                const startDate = task.start.seconds ? new Date(Number(task.start.seconds)*1000) : task.start
+                const endDate = task.end.seconds ? new Date(Number(task.end.seconds)*1000) : task.end
+
+                return {
+                    id: task.id,
+                    name: task.name,
+                    start: startDate,
+                    end: endDate,
+                    progress: task.progress,
+                    dependencies: task.dependencies
+                }
+            })
+            this.ganttSVG.refresh(tasksConverted)
         })
     },
     methods: {
+        
         initializeGantt() {
             const tasks = this.projectsStore.tasks(this.projectID)
             
@@ -74,7 +88,14 @@ export default {
                 }
             })
 
-            this.ganttSVG = new Gantt("#gantt", tasksConverted, {
+            const divElement = this.$refs.ganttRef as HTMLDivElement
+            const appendingSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            const idAttribute = document.createAttribute('id')
+            idAttribute.value = this.oldTag
+            appendingSvg.attributes.setNamedItem(idAttribute)
+            divElement.appendChild(appendingSvg)
+
+            this.ganttSVG = new Gantt(appendingSvg, tasksConverted, {
                 header_height: 50,
                 column_width: 30,
                 step: 24,
@@ -88,7 +109,7 @@ export default {
                 language: 'it',
                 custom_popup_html: null,
                 on_click: function (task: any) {
-                    alert("click")
+                    alert("hai premuto due volte")
                 },
                 on_date_change: (task: any, start: any, end: any) => {
                     start = new Date(start)
@@ -102,16 +123,28 @@ export default {
                 }
             })
         },
+
         async fetchData() {            
-            this.project = this.projectsStore.project(this.projectID)
+            try {
+                await this.projectsStore.getProjects();
+                this.project = this.projectsStore.project(this.projectID)
+            } catch (error) {
+                console.error(error);
+            }
         }, 
+
         refreshProjectID() {
             console.log("refresh")
             
             if(this.ganttSVG != undefined) {
                 console.log(this.ganttSVG)
+
                 this.ganttSVG.clear()
                 this.ganttSVG = undefined
+                
+                const toDeleteSvg = document.getElementById(this.oldTag) as HTMLElement
+                toDeleteSvg.remove()
+
                 this.initializeGantt()
             }
             

@@ -56,11 +56,11 @@ export default {
             this.currentPath = this.$route.path
 
             this.projectID = this.$route.params.id as string
-
-            this.project = this.projectStore.project(this.projectID)
-
-            if(this.project == undefined)
-                this.$router.push({name: 'Error404'})
+            console.log(this.projectID)
+            if(this.projectID) {
+                this.project = this.projectStore.project(this.projectID)
+            }
+            
         }
     }
 }

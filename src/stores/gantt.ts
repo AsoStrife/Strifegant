@@ -16,8 +16,8 @@ export const useGanttStore = defineStore('gantt', {
     },
     actions: {
         addTask(task: Task) {
-            task.start = dayjs(task.start).format('YYYY-MM-DD')
-            task.end = dayjs(task.end).format('YYYY-MM-DD')
+            task.start = dayjs(task.start)
+            task.end = dayjs(task.end)
             this._tasks.push(task)
         },
         updateTask(id: string) {

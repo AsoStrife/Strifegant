@@ -87,7 +87,7 @@ export default {
             return this.currentPath.includes('/project') ? 'side-menu--active' : ''
         },
         isSubMenuProjectActive(currentID: string) {
-            return this.projectID == currentID ? 'side-menu--active' : ''
+            return this.$route.params.id == currentID ? 'side-menu--active' : ''
         }
     }
 }

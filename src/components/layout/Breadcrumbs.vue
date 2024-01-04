@@ -1,13 +1,15 @@
 <template>
     <div class="-intro-x breadcrumb me-auto">
-        <!-- <router-link to="">Application</router-link>
-        <router-link to="" class="breadcrumb--active">Dashboard</router-link> -->
-        
-        
-        <div v-for="(b, i) in currentRoute?.meta?.breadcrumbs" :key="i">
-            <router-link :to="{name: b?.name}" :class="activeClass(i)"> {{$t(b?.i18n)}} </router-link>
-            <i class="fa-solid fa-chevron-right breadcrumb__icon" v-if="hasNext(i)"></i>
-        </div>
+        <nav aria-label="breadcrumb" class="-intro-x h-full mr-auto">
+            <ol class="breadcrumb breadcrumb-light">
+
+                <li class="breadcrumb-item" v-for="(b, i) in currentRoute?.meta?.breadcrumbs" :key="i">
+                    <router-link :to="{ name: b?.name }">
+                        {{ $t(b?.i18n) }}
+                    </router-link>
+                </li>
+            </ol>
+        </nav>
     </div>
 </template>
 
@@ -17,7 +19,7 @@ import breadcrumbs from '@/router/breadcrumbs';
 
 export default {
     name: "Breadcrumbs",
-    components: { },
+    components: {},
     data() {
         return {
             currentRoute: {} as any,
@@ -36,9 +38,9 @@ export default {
     methods: {
         hasNext(index: number) {
             return index + 1 < this.currentRoute?.meta?.breadcrumbs.length
-        }, 
-        activeClass(index: number){
-            return index + 1 < this.currentRoute?.meta?.breadcrumbs.length ? '': 'breadcrumb--active'
+        },
+        activeClass(index: number) {
+            return index + 1 < this.currentRoute?.meta?.breadcrumbs.length ? '' : 'breadcrumb--active'
         }
     }
 }

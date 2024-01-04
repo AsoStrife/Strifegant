@@ -29,14 +29,20 @@ export const useProjectsStore = defineStore('projects', {
     actions: {
         async getProjects() {
             this._projects = []
-            
-            const unsubscribe = onSnapshot(collection(db, "projects"), (doc) => {
-                doc.forEach((doc) =>
-                    this._projects.push(doc.data() as Project)
-                );
-            });
+            return new Promise((resolve, reject) => {
+                try{
+                    onSnapshot(collection(db, "projects"), (doc) => {
+                        doc.forEach((doc) =>
+                            this._projects.push(doc.data() as Project)
+                        );
+                    });
+                    this._projects = this._projects.sort((a, b) => a.name.localeCompare(b.name))
+                    resolve(this._projects)
+                }catch(error){
+                    reject(error)
+                }
 
-            console.log(unsubscribe)
+            })
         },
         async addProject(project: Project) {
             // this._projects.push(project)
