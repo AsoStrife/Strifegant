@@ -15,7 +15,6 @@ export const useProjectsStore = defineStore('projects', {
     getters: {
         projects: (state) => state._projects, 
         project: (state) => (projectID: string) => {
-            console.log("projectID", projectID)
             return state._projects.find(item => item.id === projectID)
         }, 
         tasks: (state) => (projectID: string) => {
@@ -31,20 +30,13 @@ export const useProjectsStore = defineStore('projects', {
         async getProjects() {
             this._projects = []
             
-            onSnapshot(collection(db, "projects"), (doc) => {
+            const unsubscribe = onSnapshot(collection(db, "projects"), (doc) => {
                 doc.forEach((doc) =>
                     this._projects.push(doc.data() as Project)
                 );
             });
-            console.log(this._projects);
-            /*
-            const projects = await getDocs(collection(db, "projects"));
-            console.log(" => ", projects);
-            projects.forEach((doc) => {
-                this._projects.push(doc.data() as Project)
-                console.log(doc.id, " => ", doc.data());
-            });
-            */
+
+            console.log(unsubscribe)
         },
         async addProject(project: Project) {
             // this._projects.push(project)
@@ -64,18 +56,14 @@ export const useProjectsStore = defineStore('projects', {
             // Esegui una query per trovare il documento con il campo specificato
             const querySnapshot = await getDocs(query(collection(db, "projects"), where("id", "==", projectID)));
         
-            // Verifica se c'è un documento trovato
             if (querySnapshot.empty) {
-                // Il documento non è stato trovato, gestisci di conseguenza
                 return;
             }
         
-            // Ottieni il riferimento al primo documento trovato
             const docRef = querySnapshot.docs[0].ref;
         
-            // Aggiorna il documento
             await updateDoc(docRef, {
-                tasks: arrayUnion(task) // Aggiungi il nuovo task all'array senza duplicati
+                tasks: arrayUnion(task)
             });
         },
         
@@ -90,8 +78,8 @@ export const useProjectsStore = defineStore('projects', {
             if(indexTask == -1)
                 return 
             
-            this._projects[indexProject].tasks[indexTask].start = dayjs(start).format('YYYY-MM-DD')
-            this._projects[indexProject].tasks[indexTask].end = dayjs(end).format('YYYY-MM-DD')
+            this._projects[indexProject].tasks[indexTask].start = dayjs(start)
+            this._projects[indexProject].tasks[indexTask].end = dayjs(end)
                 
             
         },

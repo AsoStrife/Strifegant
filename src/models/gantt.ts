@@ -28,8 +28,8 @@ export interface Project {
 export interface Task {
     id: string;
     name: string;
-    start: string;
-    end: string;
+    start: any;
+    end: any;
     progress: number;
     dependencies: string[];
 }

@@ -24,10 +24,11 @@ export default {
             default: ''
         }
     }, 
+
     watch: {
         'projectID': 'refreshProjectID',
-
     },
+
     data() {
         return {
             project: undefined as Project | undefined,
@@ -38,7 +39,6 @@ export default {
     mounted() {
         this.fetchData()
 
-        console.log(this.project?.tasks)
         if (this.project?.tasks?.length > 0){
             this.initializeGantt()
         }
@@ -59,8 +59,22 @@ export default {
             
             if(tasks?.length == 0)
                 return 
+            
+            const tasksConverted = tasks?.map(task => {
+                const startDate = task.start.seconds ? new Date(Number(task.start.seconds)*1000) : task.start
+                const endDate = task.end.seconds ? new Date(Number(task.end.seconds)*1000) : task.end
 
-            this.ganttSVG = new Gantt("#gantt", tasks, {
+                return {
+                    id: task.id,
+                    name: task.name,
+                    start: startDate,
+                    end: endDate,
+                    progress: task.progress,
+                    dependencies: task.dependencies
+                }
+            })
+
+            this.ganttSVG = new Gantt("#gantt", tasksConverted, {
                 header_height: 50,
                 column_width: 30,
                 step: 24,
@@ -77,6 +91,8 @@ export default {
                     alert("click")
                 },
                 on_date_change: (task: any, start: any, end: any) => {
+                    start = new Date(start)
+                    end = new Date(end)
                     this.projectsStore.updateTaskDates(this.projectID, task, start, end)
                 },
                 on_progress_change: function (task: any, progress: any) {
@@ -90,7 +106,10 @@ export default {
             this.project = this.projectsStore.project(this.projectID)
         }, 
         refreshProjectID() {
+            console.log("refresh")
+            
             if(this.ganttSVG != undefined) {
+                console.log(this.ganttSVG)
                 this.ganttSVG.clear()
                 this.ganttSVG = undefined
                 this.initializeGantt()

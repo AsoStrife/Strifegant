@@ -19,7 +19,7 @@
         <div class="intro-y col-12 col-lg-12">
             
             <div class="intro-y box">
-                <GanttVue :projectID="projectID"/>                
+                <GanttVue :projectID="projectID" v-if="projectID"/>                
             </div>
 
         </div>
