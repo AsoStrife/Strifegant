@@ -31,10 +31,19 @@ export const useProjectsStore = defineStore('projects', {
             this._projects = []
             return new Promise((resolve, reject) => {
                 try{
-                    onSnapshot(collection(db, "projects"), (doc) => {
-                        doc.forEach((doc) =>
-                            this._projects.push(doc.data() as Project)
-                        );
+                    onSnapshot(collection(db, "projects"), (docs) => {
+                        docs.forEach((doc) =>{
+                            const data = doc.data() as Project;
+                            const existingProjectIndex = this._projects.findIndex((p) => p.id === doc.id);
+                    
+                            if (existingProjectIndex !== -1) {
+                                // Se il progetto esiste già, aggiorna i dati
+                                this._projects[existingProjectIndex] = data;
+                            } else {
+                                // Se il progetto non esiste, aggiungi i nuovi dati
+                                this._projects.push(data);
+                            }
+                        });
                     });
                     this._projects = this._projects.sort((a, b) => a.name.localeCompare(b.name))
                     resolve(this._projects)
@@ -58,19 +67,58 @@ export const useProjectsStore = defineStore('projects', {
         deleteProject(project: Project) {
             this._projects = this._projects.filter(item => item.id !== project.id)
         },
-        async addTask(projectID: string, task: Task) {
-            // Esegui una query per trovare il documento con il campo specificato
-            const querySnapshot = await getDocs(query(collection(db, "projects"), where("id", "==", projectID)));
-        
+        async updateTask(projectID: string, task: Task) {
+            const tasks = Object.assign(this.tasks(projectID) as Task[]) as Task[]
+            const index = tasks.findIndex(item => item.id === task.id);
+            tasks.splice(index, 1, task)
+            console.log(tasks)
+            const querySnapshot = await getDocs(
+                query(collection(db, "projects"), 
+                where("id", "==", projectID))
+            );
+            
+            console.log(querySnapshot)
             if (querySnapshot.empty) {
                 return;
             }
-        
-            const docRef = querySnapshot.docs[0].ref;
-        
-            await updateDoc(docRef, {
-                tasks: arrayUnion(task)
-            });
+
+            const doc = querySnapshot.docs[0];
+
+            const project = doc.data() as Project;
+            const taskToFind = project.tasks.find(item => item.id === task.id) as Task
+            console.log(taskToFind)
+            if(taskToFind){
+                const docRef = doc.ref;
+                updateDoc(docRef, {
+                    tasks: tasks
+                });
+            }
+
+           
+           
+        },
+        async addTask(projectID: string, task: Task) {
+            try {
+                const tasks = Object.assign(this._projects.find(item => item.id === projectID)?.tasks as Task[])
+                tasks.push(task)
+
+                const querySnapshot = await getDocs(
+                    query(collection(db, "projects"), 
+                    where("id", "==", projectID))
+                );
+                
+                if (querySnapshot.empty) {
+                    return;
+                }
+                
+                const docRef = querySnapshot.docs[0].ref;
+    
+                await updateDoc(docRef, {
+                    tasks: arrayUnion(tasks)
+                });
+            } catch (error) {
+                console.log(error)
+            }
         },
         
         updateTaskDates(projectID: string, task: Task, start: string, end: string) {
@@ -84,10 +132,10 @@ export const useProjectsStore = defineStore('projects', {
             if(indexTask == -1)
                 return 
             
-            this._projects[indexProject].tasks[indexTask].start = dayjs(start)
-            this._projects[indexProject].tasks[indexTask].end = dayjs(end)
+            this._projects[indexProject].tasks[indexTask].start = start
+            this._projects[indexProject].tasks[indexTask].end = end
                 
-            
+            this.updateTask(projectID, this._projects[indexProject].tasks[indexTask])
         },
         updateTaskProgress(projectID: string, task: Task, progress: number){
 
